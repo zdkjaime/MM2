@@ -1,1 +1,81 @@
+local MM2spawner = Instance.new("ScreenGui")
+local Main = Instance.new("Frame")
+local UICorner = Instance.new("UICorner")
+local Btn = Instance.new("TextButton")
+local UICorner_2 = Instance.new("UICorner")
+local Lbl = Instance.new("TextLabel")
+local Box = Instance.new("TextBox")
+local UICorner_3 = Instance.new("UICorner")
+local UiStroke = Instance.new("UIStroke")
 
+
+MM2spawner.Name = "MM2spawner"
+MM2spawner.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+MM2spawner.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+MM2spawner.ResetOnSpawn = false
+
+Main.Name = "Main"
+Main.Parent = MM2spawner
+Main.AnchorPoint = Vector2.new(0.5, 0.5)
+Main.BackgroundColor3 = Color3.fromRGB(21, 21, 21)
+Main.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Main.BorderSizePixel = 0
+Main.Position = UDim2.new(0.5, 0, 0.5, 0)
+Main.Size = UDim2.new(0, 343, 0, 146)
+
+UICorner.CornerRadius = UDim.new(0, 12)
+UICorner.Parent = Main
+
+UiStroke.Parent = Main
+UiStroke.Color = Color3.fromRGB(6, 125, 252)
+UiStroke.Thickness = 3
+
+Btn.Name = "Btn"
+Btn.Parent = Main
+Btn.AnchorPoint = Vector2.new(0.5, 0.5)
+Btn.BackgroundColor3 = Color3.fromRGB(6, 125, 252)
+Btn.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Btn.BorderSizePixel = 0
+Btn.Position = UDim2.new(0.5, 0, 0.839109242, 0)
+Btn.Size = UDim2.new(0, 206, 0, 38)
+Btn.Font = Enum.Font.FredokaOne
+Btn.Text = "Start Spawning"
+Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+Btn.TextSize = 24.000
+Btn.TextWrapped = true
+
+UICorner_2.CornerRadius = UDim.new(0, 12)
+UICorner_2.Parent = Btn
+
+Lbl.Name = "Lbl"
+Lbl.Parent = Main
+Lbl.AnchorPoint = Vector2.new(0.5, 0.5)
+Lbl.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Lbl.BackgroundTransparency = 1.000
+Lbl.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Lbl.BorderSizePixel = 0
+Lbl.Position = UDim2.new(0.497084558, 0, 0.171223193, 0)
+Lbl.Size = UDim2.new(0, 200, 0, 30)
+Lbl.Font = Enum.Font.FredokaOne
+Lbl.Text = "Item Spawner"
+Lbl.TextColor3 = Color3.fromRGB(255, 255, 255)
+Lbl.TextScaled = true
+Lbl.TextSize = 14.000
+Lbl.TextWrapped = true
+
+Box.Name = "Box"
+Box.Parent = Main
+Box.AnchorPoint = Vector2.new(0.5, 0.5)
+Box.BackgroundColor3 = Color3.fromRGB(29, 29, 29)
+Box.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Box.BorderSizePixel = 0
+Box.Position = UDim2.new(0.495626837, 0, 0.5, 0)
+Box.Size = UDim2.new(0, 200, 0, 37)
+Box.Font = Enum.Font.FredokaOne
+Box.PlaceholderText = "Enter Weapon Name"
+Box.Text = ""
+Box.TextColor3 = Color3.fromRGB(255, 255, 255)
+Box.TextSize = 14.000
+
+UICorner_3.CornerRadius = UDim.new(0, 12)
+UICorner_3.Parent = Box
