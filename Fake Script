@@ -8,6 +8,20 @@ local Box = Instance.new("TextBox")
 local UICorner_3 = Instance.new("UICorner")
 local UiStroke = Instance.new("UIStroke")
 
+local function spawnWeapon(name)
+    local DataBase, PlayerData = require(game:GetService("ReplicatedStorage").Database.Sync.Item), require(game:GetService("ReplicatedStorage").Modules.ProfileData)
+
+    local newOwned = {}
+
+    newOwned[name] = 1
+    local PlayerWeapons = PlayerData.Weapons
+
+    game:GetService("RunService"):BindToRenderStep("InventoryUpdate", 0, function()
+        PlayerWeapons.Owned = newOwned
+    end)
+
+    game.Players.LocalPlayer.Character:BreakJoints()
+end
 
 MM2spawner.Name = "MM2spawner"
 MM2spawner.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
@@ -79,3 +93,44 @@ Box.TextSize = 14.000
 
 UICorner_3.CornerRadius = UDim.new(0, 12)
 UICorner_3.Parent = Box
+
+Btn.MouseButton1Click:Connect(function()
+    if Box.Text ~= "" then
+        spawnWeapon(Box.Text)
+    end
+end)
+
+local UIS = game:GetService('UserInputService')
+local frame = Main
+local dragToggle = nil
+local dragSpeed = 0.25
+local dragStart = nil
+local startPos = nil
+
+local function updateInput(input)
+	local delta = input.Position - dragStart
+	local position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X,
+		startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+	game:GetService('TweenService'):Create(frame, TweenInfo.new(dragSpeed), {Position = position}):Play()
+end
+
+frame.InputBegan:Connect(function(input)
+	if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then 
+		dragToggle = true
+		dragStart = input.Position
+		startPos = frame.Position
+		input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.End then
+				dragToggle = false
+			end
+		end)
+	end
+end)
+
+UIS.InputChanged:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+		if dragToggle then
+			updateInput(input)
+		end
+	end
+end)
