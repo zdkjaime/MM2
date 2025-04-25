@@ -1,196 +1,195 @@
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-local RunService = game:GetService("RunService")
+--setings:
+title = "Loading Script!" --upper title
+loading_text = "Please wait!" --gray title
+loadingtime = "200" --loading time (in seconds)
 
--- GUI
-local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "LoadingScreen"
-screenGui.IgnoreGuiInset = true
-screenGui.ResetOnSpawn = false
-screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 
--- Fondo con gradiente oscuro
-local background = Instance.new("Frame")
-background.Size = UDim2.new(1, 0, 1, 0)
-background.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
-background.Parent = screenGui
 
-local backgroundGradient = Instance.new("UIGradient")
-backgroundGradient.Color = ColorSequence.new({
-	ColorSequenceKeypoint.new(0.0, Color3.fromRGB(15, 15, 15)),
-	ColorSequenceKeypoint.new(0.1, Color3.fromRGB(18, 18, 18)),
-	ColorSequenceKeypoint.new(0.2, Color3.fromRGB(20, 20, 20)),
-	ColorSequenceKeypoint.new(0.3, Color3.fromRGB(23, 23, 23)),
-	ColorSequenceKeypoint.new(0.4, Color3.fromRGB(26, 26, 26)),
-	ColorSequenceKeypoint.new(0.5, Color3.fromRGB(28, 28, 28)),
-	ColorSequenceKeypoint.new(0.6, Color3.fromRGB(30, 30, 30)),
-	ColorSequenceKeypoint.new(0.7, Color3.fromRGB(33, 33, 33)),
-	ColorSequenceKeypoint.new(0.8, Color3.fromRGB(35, 35, 35)),
-	ColorSequenceKeypoint.new(0.9, Color3.fromRGB(38, 38, 38)),
-	ColorSequenceKeypoint.new(1.0, Color3.fromRGB(40, 40, 40)),
-})
-backgroundGradient.Rotation = 90
-backgroundGradient.Parent = background
 
--- Tips label
-local tipsText = Instance.new("TextLabel")
-tipsText.Size = UDim2.new(1, 0, 0, 50)
-tipsText.Position = UDim2.new(0, 0, 0.25, 0)
-tipsText.BackgroundTransparency = 1
-tipsText.TextScaled = true
-tipsText.Font = Enum.Font.GothamBold
-tipsText.Text = ""
-tipsText.TextColor3 = Color3.new(1, 1, 1)
-tipsText.Parent = background
 
--- Loading bar container
-local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0.4, 0, 0.04, 0)
-frame.Position = UDim2.new(0.3, 0, 0.5, 0)
-frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-frame.BorderSizePixel = 0
-frame.Parent = background
 
-local uiCornerFrame = Instance.new("UICorner")
-uiCornerFrame.CornerRadius = UDim.new(0, 12)
-uiCornerFrame.Parent = frame
 
--- Barra de carga
-local loadingBar = Instance.new("Frame")
-loadingBar.Size = UDim2.new(0, 0, 1, 0)
-loadingBar.Position = UDim2.new(0, 0, 0, 0)
-loadingBar.BorderSizePixel = 0
-loadingBar.Parent = frame
 
-local uiCornerBar = Instance.new("UICorner")
-uiCornerBar.CornerRadius = UDim.new(0, 12)
-uiCornerBar.Parent = loadingBar
+--credits to saint ! 
+-- do not touch/edit anything below! unless you know how to code ;)
 
--- Porcentaje
-local percentLabel = Instance.new("TextLabel")
-percentLabel.Size = UDim2.new(1, 0, 0, 30)
-percentLabel.Position = UDim2.new(0, 0, 1.1, 0)
-percentLabel.BackgroundTransparency = 1
-percentLabel.TextScaled = true
-percentLabel.Font = Enum.Font.GothamBold
-percentLabel.Text = "Loading... 0%"
-percentLabel.TextColor3 = Color3.new(1, 1, 1)
-percentLabel.Parent = frame
+local ScreenGui = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local Frame_2 = Instance.new("Frame")
+local UICorner = Instance.new("UICorner")
+local name = Instance.new("TextLabel")
+local loadingtext = Instance.new("TextLabel")
+local Dots = Instance.new("Frame")
+local Dot1 = Instance.new("Frame")
+local UICorner_2 = Instance.new("UICorner")
+local InsideDot = Instance.new("Frame")
+local UICorner_3 = Instance.new("UICorner")
+local Dot2 = Instance.new("Frame")
+local UICorner_4 = Instance.new("UICorner")
+local InsideDot_2 = Instance.new("Frame")
+local UICorner_5 = Instance.new("UICorner")
+local Dot3 = Instance.new("Frame")
+local UICorner_6 = Instance.new("UICorner")
+local InsideDot_3 = Instance.new("Frame")
+local UICorner_7 = Instance.new("UICorner")
+local seperator = Instance.new("Frame")
 
--- Welcome label
-local welcomeLabel = Instance.new("TextLabel")
-welcomeLabel.Size = UDim2.new(1, 0, 0, 30)
-welcomeLabel.Position = UDim2.new(0, 0, 1.5, 50)
-welcomeLabel.BackgroundTransparency = 1
-welcomeLabel.TextScaled = true
-welcomeLabel.Font = Enum.Font.GothamBold
-welcomeLabel.Text = ""
-welcomeLabel.TextColor3 = Color3.new(1, 1, 1)
-welcomeLabel.TextTransparency = 1
-welcomeLabel.Parent = frame
+--Properties:
 
--- Username label
-local nameLabel = Instance.new("TextLabel")
-nameLabel.Size = UDim2.new(1, 0, 0, 30)
-nameLabel.Position = UDim2.new(0, 0, 1.7, 50)
-nameLabel.BackgroundTransparency = 1
-nameLabel.TextScaled = true
-nameLabel.Font = Enum.Font.GothamBold
-nameLabel.Text = ""
-nameLabel.TextColor3 = Color3.new(1, 1, 1)
-nameLabel.TextTransparency = 1
-nameLabel.Parent = frame
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+ScreenGui.DisplayOrder = 999999999
+ScreenGui.IgnoreGuiInset = true
 
--- Tips
-local tips = {
-	"This script has no key - 100% free!",
-	"Loading speed depends on your device.",
-	"We’ve optimized everything to the max!",
-	"Wait until we load all assets",
-	"Loading all sounds",
-}
+Frame.Parent = ScreenGui
+Frame.AnchorPoint = Vector2.new(0.5, 0.5)
+Frame.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
+Frame.BackgroundTransparency = 0.200
+Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Frame.BorderSizePixel = 0
+Frame.LayoutOrder = 2
+Frame.Position = UDim2.new(0.5, 0, 0.5, 0)
+Frame.Size = UDim2.new(1, 0, 1, 0)
 
--- Máquina de escribir de tips
-local function loopTips()
-	coroutine.wrap(function()
-		while true do
-			for _, text in ipairs(tips) do
-				tipsText.Text = ""
-				for i = 1, #text do
-					tipsText.Text = string.sub(text, 1, i)
-					wait(0.05)
-				end
-				wait(2)
-			end
-		end
-	end)()
+Frame_2.Parent = Frame
+Frame_2.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
+Frame_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Frame_2.BorderSizePixel = 0
+Frame_2.Position = UDim2.new(0.374831498, 0, 0.370646775, 0)
+Frame_2.Size = UDim2.new(0.249523804, 0, 0.25746268, 0)
+
+UICorner.Parent = Frame_2
+
+name.Name = "name"
+name.Parent = Frame_2
+name.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+name.BackgroundTransparency = 1.000
+name.BorderColor3 = Color3.fromRGB(0, 0, 0)
+name.BorderSizePixel = 0
+name.Position = UDim2.new(0, 0, 0.0501869693, 0)
+name.Size = UDim2.new(1, 0, 0.164251208, 0)
+name.Font = Enum.Font.FredokaOne
+name.Text = title
+name.TextColor3 = Color3.fromRGB(255, 255, 255)
+name.TextScaled = true
+name.TextSize = 14.000
+name.TextWrapped = true
+
+loadingtext.Name = "loadingtext"
+loadingtext.Parent = Frame_2
+loadingtext.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+loadingtext.BackgroundTransparency = 1.000
+loadingtext.BorderColor3 = Color3.fromRGB(0, 0, 0)
+loadingtext.BorderSizePixel = 0
+loadingtext.Position = UDim2.new(0.161290318, 0, 0.213806599, 0)
+loadingtext.Size = UDim2.new(0.677419364, 0, 0.12077295, 0)
+loadingtext.Font = Enum.Font.FredokaOne
+loadingtext.Text = loading_text
+loadingtext.TextColor3 = Color3.fromRGB(97, 97, 97)
+loadingtext.TextScaled = true
+loadingtext.TextSize = 14.000
+loadingtext.TextWrapped = true
+
+Dots.Name = "Dots"
+Dots.Parent = Frame_2
+Dots.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Dots.BackgroundTransparency = 1.000
+Dots.BorderColor3 = Color3.fromRGB(27, 42, 53)
+Dots.Position = UDim2.new(0.293254822, 0, 0.555557609, 0)
+Dots.Size = UDim2.new(0.41670385, 0, 0.255644023, 0)
+
+Dot1.Name = "Dot1"
+Dot1.Parent = Dots
+Dot1.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+Dot1.BorderColor3 = Color3.fromRGB(27, 42, 53)
+Dot1.Position = UDim2.new(0.0611661971, 0, 0.234447539, 0)
+Dot1.Size = UDim2.new(0.159291148, 0, 0.51158762, 0)
+
+UICorner_2.CornerRadius = UDim.new(0.5, 0)
+UICorner_2.Parent = Dot1
+
+InsideDot.Name = "InsideDot"
+InsideDot.Parent = Dot1
+InsideDot.AnchorPoint = Vector2.new(0.5, 0.5)
+InsideDot.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+InsideDot.BorderColor3 = Color3.fromRGB(27, 42, 53)
+InsideDot.Position = UDim2.new(0.5, 0, 0.5, 0)
+
+UICorner_3.CornerRadius = UDim.new(0.5, 0)
+UICorner_3.Parent = InsideDot
+
+Dot2.Name = "Dot2"
+Dot2.Parent = Dots
+Dot2.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+Dot2.BorderColor3 = Color3.fromRGB(27, 42, 53)
+Dot2.Position = UDim2.new(0.419989735, 0, 0.234447539, 0)
+Dot2.Size = UDim2.new(0.159291148, 0, 0.51158762, 0)
+
+UICorner_4.CornerRadius = UDim.new(0.5, 0)
+UICorner_4.Parent = Dot2
+
+InsideDot_2.Name = "InsideDot"
+InsideDot_2.Parent = Dot2
+InsideDot_2.AnchorPoint = Vector2.new(0.5, 0.5)
+InsideDot_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+InsideDot_2.BorderColor3 = Color3.fromRGB(27, 42, 53)
+InsideDot_2.Position = UDim2.new(0.5, 0, 0.5, 0)
+
+UICorner_5.CornerRadius = UDim.new(0.5, 0)
+UICorner_5.Parent = InsideDot_2
+
+Dot3.Name = "Dot3"
+Dot3.Parent = Dots
+Dot3.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+Dot3.BorderColor3 = Color3.fromRGB(27, 42, 53)
+Dot3.Position = UDim2.new(0.778813243, 0, 0.234447539, 0)
+Dot3.Size = UDim2.new(0.159291148, 0, 0.51158762, 0)
+
+UICorner_6.CornerRadius = UDim.new(0.5, 0)
+UICorner_6.Parent = Dot3
+
+InsideDot_3.Name = "InsideDot"
+InsideDot_3.Parent = Dot3
+InsideDot_3.AnchorPoint = Vector2.new(0.5, 0.5)
+InsideDot_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+InsideDot_3.BorderColor3 = Color3.fromRGB(27, 42, 53)
+InsideDot_3.Position = UDim2.new(0.5, 0, 0.5, 0)
+
+UICorner_7.CornerRadius = UDim.new(0.5, 0)
+UICorner_7.Parent = InsideDot_3
+
+seperator.Name = "seperator"
+seperator.Parent = Frame_2
+seperator.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
+seperator.BorderColor3 = Color3.fromRGB(0, 0, 0)
+seperator.BorderSizePixel = 0
+seperator.Position = UDim2.new(0, 0, 0.365113497, 0)
+seperator.Size = UDim2.new(0.999704897, 0, 0.026786631, 0)
+
+-- Scripts:
+
+local function YCMO_fake_script() -- Dots.Dots 
+	local script = Instance.new('LocalScript', Dots)
+
+	while true do
+		wait(0.25)
+		script.Parent.Dot1.InsideDot:TweenSize(UDim2.new(1,0,1,0), "In", "Sine", 0.25, true)
+		wait(0.25)
+		script.Parent.Dot2.InsideDot:TweenSize(UDim2.new(1,0,1,0), "In", "Sine", 0.25, true)
+		wait(0.25)
+		script.Parent.Dot3.InsideDot:TweenSize(UDim2.new(1,0,1,0), "In", "Sine", 0.25, true)
+		wait(0.25)
+		script.Parent.Dot1.InsideDot:TweenSize(UDim2.new(0,0,0,0), "In", "Sine", 0.25, true)
+		wait(0.25)
+		script.Parent.Dot2.InsideDot:TweenSize(UDim2.new(0,0,0,0), "In", "Sine", 0.25, true)
+		wait(0.25)
+		script.Parent.Dot3.InsideDot:TweenSize(UDim2.new(0,0,0,0), "In", "Sine", 0.25, true)
+	end
 end
 
--- Animación de bienvenida
-local function animateWelcome()
-	coroutine.wrap(function()
-		local welcomeText = "Welcome to MM2 Hub"
-		local usernameText = LocalPlayer.Name
 
-		for i = 1, 20 do
-			local offset = 50 - i * 2.5
-			welcomeLabel.Position = UDim2.new(0, 0, 1.5, offset)
-			nameLabel.Position = UDim2.new(0, 0, 1.7, offset)
-			welcomeLabel.TextTransparency = 1 - (i / 20)
-			nameLabel.TextTransparency = 1 - (i / 20)
-			wait(0.02)
-		end
+coroutine.wrap(YCMO_fake_script)()
 
-		welcomeLabel.Text = ""
-		for i = 1, #welcomeText do
-			welcomeLabel.Text = string.sub(welcomeText, 1, i)
-			wait(0.05)
-		end
 
-		wait(0.5)
-
-		nameLabel.Text = ""
-		for i = 1, #usernameText do
-			nameLabel.Text = string.sub(usernameText, 1, i)
-			wait(0.05)
-		end
-	end)()
-end
-
--- Arcoíris suave
-local hue = 0
-local function getRainbowColor()
-	hue = (hue + 0.0025) % 1
-	return Color3.fromHSV(hue, 1, 1)
-end
-
--- Iniciar animaciones
-loopTips()
-animateWelcome()
-
--- Carga animada
-local totalTime = 240
-local elapsed = 0
-
-RunService.RenderStepped:Connect(function(dt)
-	if elapsed >= totalTime then return end
-
-	elapsed += dt
-	local progress = math.clamp(elapsed / totalTime, 0, 1)
-	local percent = math.floor(progress * 100)
-
-	local color = getRainbowColor()
-	loadingBar.BackgroundColor3 = color
-	percentLabel.TextColor3 = color
-	tipsText.TextColor3 = color
-	welcomeLabel.TextColor3 = color
-	nameLabel.TextColor3 = color
-
-	loadingBar.Size = UDim2.new(progress, 0, 1, 0)
-	percentLabel.Text = "Loading... " .. percent .. "%"
-end)
-
--- Final
-task.delay(totalTime + 1, function()
-	screenGui:Destroy()
-end)
+wait(loadingtime)
+Frame.Visible = false
