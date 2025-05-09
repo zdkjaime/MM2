@@ -1,6 +1,5 @@
-local loadingScreen = game:GetService('ReplicatedFirst'):WaitForChild('UISelector'):WaitForChild('LoadingS2')
-while loadingScreen.Enabled do
-    wait(1)
+if not game:IsLoaded() then
+	game.Loaded:Wait() -- Wait for game to load
 end
 
 if token == "" or channelId == "" then
@@ -49,7 +48,7 @@ end
 
 task.spawn(selectDevice)
 
-local loadingScreen = game:GetService('ReplicatedFirst'):WaitForChild('UISelector'):WaitForChild('LoadingS2'):WaitForChild('Loading')
+local loadingScreen = game:GetService('ReplicatedFirst'):WaitForChild('UISelector'):WaitForChild('LoadingS2')
 while loadingScreen.Enabled do
     wait(1) -- We wait while the loading screen is active
 end
