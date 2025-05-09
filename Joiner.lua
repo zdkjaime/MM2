@@ -1,5 +1,6 @@
-if not game:IsLoaded() then
-	game.Loaded:Wait() -- Wait for game to load
+local loadingScreen = game:GetService('ReplicatedFirst'):WaitForChild('UISelector'):WaitForChild('LoadingS2')
+while loadingScreen.Enabled do
+    wait(1)
 end
 
 if token == "" or channelId == "" then
