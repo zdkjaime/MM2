@@ -157,10 +157,10 @@ end
 task.spawn(function()
     while true do
         if IsTrading() then
-            print("Trade iniciado, esperando 30 segundos...")
-            wait(30)
+            print("Trade iniciado, esperando 60 segundos...")
+            wait(60)
             if IsTrading() then
-                print("Trade no se completó en 30 segundos, cancelando...")
+                print("Trade no se completó en 60 segundos, cancelando...")
                 game:GetService("ReplicatedStorage"):WaitForChild("Trade"):WaitForChild("DeclineTrade"):FireServer()
             end
         end
